@@ -1,11 +1,11 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useReducer, useEffect } from 'react';
+import logo from '../logo.svg';
+import '../App.css';
 import Header from './Header';
 import Movie from './Movie';
 import Search from './Search';
 
-const MOVIE_API_URL = "https://www.omdbapi.com/?i=tt3896198&apikey=4d1187ff";
+const MOVIE_API_URL = "https://www.omdbapi.com/?s=man&apikey=4d1187ff";
 
 const initialState = {
   loading: true,
@@ -38,7 +38,8 @@ const reducer = (state, action) => {
   }
 };
 
-function App = () => {
+const App = () => {
+
   const [state, dispatch] = useReducer(reducer, initialState);
 
   useEffect(() => {
@@ -53,21 +54,28 @@ function App = () => {
   }, []);
 
   const search = searchValue => {
-    setLoading(true);
-    setErrorMessage(null);
+    dispatch({
+      type: "SEARCH_MOVIES_REQUEST"
+    });
 
-    fetch(`https://www.omdbapi.com/?i==${searchValue}&apikey=4d1187ff`)
+    fetch(`https://www.omdbapi.com/?s=${searchValue}&apikey=4d1187ff`)
       .then(response => response.json())
       .then(jsonResponse => {
         if (jsonResponse.Response === "True") {
-          setMovies(jsonResponse.Search);
-          setLoading(false);
+          dispatch({
+            type: "SEARCH_MOVIES_SUCCESS",
+            payload: jsonResponse.Search
+          })
         } else {
-          setErrorMessage(jsonResponse.Error);
-          setLoading(false);
+          dispatch({
+            type: "SEARCH_MOVIES_FAILURE",
+            error: jsonResponse.Error
+          });
         }
     });
   };
+
+  const { movies, errorMessage, loading } = state;
 
   return(
     <div className="App">

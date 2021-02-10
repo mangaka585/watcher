@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 const Search = (props) => {
 	const [searchValue, setSearchValue] = useState("");
@@ -17,7 +17,7 @@ const Search = (props) => {
 		resetInpoutField();
 	}
 
-	rerurn(
+	return(
 		<form className="search">
 			<input value={searchValue} onChange={handleSearchInputChange} type="text" />
 			<input onClick={callSearchFunction} type="submit" value="SEARCH" />
