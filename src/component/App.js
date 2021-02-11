@@ -1,5 +1,4 @@
 import React, { useReducer, useEffect } from 'react';
-import logo from '../logo.svg';
 import '../App.css';
 import Header from './Header';
 import Movie from './Movie';
@@ -82,15 +81,15 @@ const App = () => {
       <Header text="WATCHER" />
       <Search search={search} />
       <p className="App-intro">Некоторые наши избранные фильмы</p>
-      <div className="movie">
+      <div className="movies">
         {loading && !errorMessage ? (
           <span>загрузка...</span>
         ) : errorMessage ? (
           <div className="errorMessage">{errorMessage}</div>
         ) : (
-          movies.map((movie, index) => {
+          movies.map((movie, index) => (
             <Movie key={`${index}-${movie.Title}`} movie={movie} />
-          })
+          ))
         )}
       </div>
     </div>
